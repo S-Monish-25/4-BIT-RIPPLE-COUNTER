@@ -1,6 +1,4 @@
-
 # 4-BIT-RIPPLE-COUNTER
-
 **AIM:**
 
 To implement  4 Bit Ripple Counter using verilog and validating their functionality using their functional tables
@@ -25,47 +23,88 @@ In timing diagram Q0 is changing as soon as the negative edge of clock pulse is 
 
 **Procedure**
 
- 1.Increment count on each positive edge of the clock.
- 
- 2.Reset count to zero when it reaches 15.
- 
- 3.Generate clock signal (clk).
+1.Type the program in Quartus software.
 
- 4.Instantiate the RippleCounter module.
- 
- 5.Conduct functional testing by displaying the count at each clock cycle for 16 cycles.
+2.Compile and run the program.
 
- 
+3.Generate the RTL schematic and save the logic diagram.
+
+4.Create nodes for inputs and outputs to generate the timing diagram.
+
+5.For different input combinations generate the timing diagram.
+
 **PROGRAM**
-
 ```
-module ripple_counter(
-     input wire clk,
-	  input wire rst,
-	  output reg[3:0] count
-	  );
-	  
-always @(posedge clk or posedge rst)
-begin
-     if(rst)
-	     count <= 4'b0000;
-	  else 
-	     count <= count + 1;
-end 
+module ex12(
+   input wire clk,  // Clock input
+   output reg [3:0] count // 4-bit counter output
+);
+
+// Counter logic
+always @(posedge clk) begin
+   if (count == 4'b1111) // Reset when count reaches 15
+       count <= 4'b0000;
+   else
+       count <= count + 1; // Increment count
+end
+
 endmodule
 
+// Testbench
+module RippleCounter_tb;
+
+// Inputs
+reg clk;
+
+// Outputs
+wire [3:0] count;
+
+// Instantiate the counter
+RippleCounter uut(
+   .clk(clk),
+   .count(count)
+);
+
+// Clock generation
+initial begin
+   clk = 0;
+   forever #5 clk = ~clk; // Toggle clock every 5 time units
+end
+
+// Stimulus
+initial begin
+   // Wait for a few clock cycles
+   #10;
+   
+   // Display header
+   $display("Time | Count");
+   $display("-----------------");
+   
+   // Functional table testing
+   // Increment count 16 times and display the count
+   repeat (16) begin
+       #5; // Wait for one clock cycle
+       $display("%4d | %b", $time, count);
+   end
+   
+   // End simulation
+   $finish;
+end
+
+endmodule
 ```
-Developed by: MONISH S Register number: 212224040199
+
 
 **RTL LOGIC FOR 4 Bit Ripple Counter**
-![Screenshot 2025-05-11 004218](https://github.com/user-attachments/assets/ad0f6b2f-0791-4909-95c5-cc61436a40ee)
+
+![Screenshot 2025-05-09 175010](https://github.com/user-attachments/assets/c1dd14e5-eb2f-4c52-806d-3b6748362615)
 
 
 **TIMING DIGRAMS FOR 4 Bit Ripple Counter**
 
-![Screenshot 2025-05-11 004232](https://github.com/user-attachments/assets/d301b0fc-483e-48e9-acc5-7a47f991911e)
+![Screenshot 2025-05-09 175126](https://github.com/user-attachments/assets/7e8b92b8-230e-4e16-96fe-7a8bf0ddb5f3)
+
 
 **RESULTS**
 
-
-Thus implementing 4 Bit Ripple Counter using Verilog and validating their functionality using their functional tables is done successfully.
+4 Bit Ripple Counter using verilog and validating their functionality using their functional tables
